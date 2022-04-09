@@ -1,0 +1,24 @@
+img {
+    width: fit-content;
+    margin: 0px;
+    padding: 0px;
+    box-shadow: 0px 0px 5px 0px rgba(72, 72, 72, 0.3);
+    border: 1px solid var(--ion-color-border);
+    border-radius: 8px;
+    object-fit:contain;
+}
+
+.comicTitle{
+
+    font-weight: 600;
+}
+
+.format{
+    font-weight: 400;
+    font-size: 0.9em;
+}
+
+.price{
+    font-weight: 400;
+    font-size: 0.9em;
+}

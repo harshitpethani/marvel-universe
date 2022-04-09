@@ -1,0 +1,10 @@
+<ion-item *ngIf="character" [routerLink]="'/character-details/' + character.id" [detail]="false" lines="none">
+  <ion-col>
+    <img 
+      src="{{character.thumbnail.path}}/portrait_incredible.{{character.thumbnail.extension}}" />
+
+    <ion-text class="ion-no-margin">
+      <h6 class="characterTitle" color="primary">{{character.name}}</h6>
+    </ion-text>
+  </ion-col>
+</ion-item>

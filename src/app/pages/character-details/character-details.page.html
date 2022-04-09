@@ -1,0 +1,104 @@
+<ion-header [translucent]="true" mode="ios">
+  <ion-toolbar mode="ios">
+    <ion-buttons slot="start">
+      <ion-back-button [text]="''" defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Character Details
+    </ion-title>
+  </ion-toolbar>
+
+  <div class="contentHeader" *ngIf="scrollDepthTriggered">
+
+    <ion-item [detail]="false" lines="none" *ngIf="character">
+      <ion-row>
+        <ion-col size="2">
+          <img class="charImage"
+            src="{{character.thumbnail.path}}/standard_incredible.{{character.thumbnail.extension}}" />
+        </ion-col>
+        <ion-col size="10">
+          <ion-text class="ion-no-margin">
+            <h6 class="charTitle" color="primary">{{character.name}}</h6>
+          </ion-text>
+        </ion-col>
+
+      </ion-row>
+
+    </ion-item>
+
+    <ion-segment mode="ios" [(ngModel)]="segment" value="comics" class="segmentHeader">
+      <ion-segment-button value="comics" (click)="getComics(character.id)">
+        <ion-label>Comics</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="stories" (click)="getStories(character.id)">
+        <ion-label>Stories</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="series" (click)="getSeries(character.id)">
+        <ion-label>Series</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+
+  </div>
+
+</ion-header>
+
+<ion-content [fullscreen]="true" *ngIf="character" [scrollEvents]="true" (ionScroll)="logScrolling($event)">
+
+  <div class="container">
+
+
+    <div class="characterImageContainer">
+
+      <img src="{{character.thumbnail.path}}/standard_incredible.{{character.thumbnail.extension}}" />
+
+    </div>
+
+    <h1 color="primary" class="ion-text-center">{{character.name}}</h1>
+
+    <p class="ion-text-justify">{{ character.description }}</p>
+
+
+    <ion-segment mode="ios" [(ngModel)]="segment" value="comics" class="segmentContent">
+      <ion-segment-button value="comics" (click)="getComics(character.id)">
+        <ion-label>Comics</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="stories" (click)="getStories(character.id)">
+        <ion-label>Stories</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="series" (click)="getSeries(character.id)">
+        <ion-label>Series</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <div [ngSwitch]="segment">
+
+      <div *ngSwitchCase="'comics'" class="ion-margin-top">
+
+        <app-comic *ngFor="let comic of comicsList | paginate: { itemsPerPage: 10, currentPage: page }" [comic]="comic"></app-comic>
+
+        <pagination-controls #1 class="my-pagination" (pageChange)="page = $event"></pagination-controls>
+
+      </div>
+
+      <div *ngSwitchCase="'stories'" class="ion-margin-top">
+
+        <app-story *ngFor="let story of storiesList | paginate: { itemsPerPage: 10, currentPage: pageStory }" [story]="story"></app-story>
+
+        <pagination-controls #2 (pageChange)="pageStory = $event"></pagination-controls>
+
+      </div>
+
+      <div *ngSwitchCase="'series'" class="ion-margin-top">
+
+        <app-series *ngFor="let series of seriesList | paginate: { itemsPerPage: 10, currentPage: pageSeries }" [series]="series"></app-series>
+
+        <pagination-controls #3 (pageChange)="pageSeries = $event"></pagination-controls>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>

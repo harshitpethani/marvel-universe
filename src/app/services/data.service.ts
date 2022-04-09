@@ -1,83 +1,150 @@
 import { Injectable } from '@angular/core';
+import { Md5 } from 'ts-md5/dist/md5';
 
-export interface Message {
-  fromName: string;
-  subject: string;
-  date: string;
-  id: number;
-  read: boolean;
-}
+import { Http, HttpResponse } from '@capacitor-community/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-  public messages: Message[] = [
-    {
-      fromName: 'Matt Chorsey',
-      subject: 'New event: Trip to Vegas',
-      date: '9:32 AM',
-      id: 0,
-      read: false
-    },
-    {
-      fromName: 'Lauren Ruthford',
-      subject: 'Long time no chat',
-      date: '6:12 AM',
-      id: 1,
-      read: false
-    },
-    {
-      fromName: 'Jordan Firth',
-      subject: 'Report Results',
-      date: '4:55 AM',
-      id: 2,
-      read: false
-    },
-    {
-      fromName: 'Bill Thomas',
-      subject: 'The situation',
-      date: 'Yesterday',
-      id: 3,
-      read: false
-    },
-    {
-      fromName: 'Joanne Pollan',
-      subject: 'Updated invitation: Swim lessons',
-      date: 'Yesterday',
-      id: 4,
-      read: false
-    },
-    {
-      fromName: 'Andrea Cornerston',
-      subject: 'Last minute ask',
-      date: 'Yesterday',
-      id: 5,
-      read: false
-    },
-    {
-      fromName: 'Moe Chamont',
-      subject: 'Family Calendar - Version 1',
-      date: 'Last Week',
-      id: 6,
-      read: false
-    },
-    {
-      fromName: 'Kelly Richardson',
-      subject: 'Placeholder Headhots',
-      date: 'Last Week',
-      id: 7,
-      read: false
-    }
-  ];
+  
+
+  private privateKey = "f1fa688df62c786bc508d16167181080b6593311";
+  private publicKey = "83ab092f51fae9d60da186cd831d6423";
 
   constructor() { }
 
-  public getMessages(): Message[] {
-    return this.messages;
+  public async getCharacterList(limit: number, startOffset: number, searchText: string) {
+
+    //get MD5 hash
+    var timeStamp = new Date().getTime();
+    var hash = this.createHash(timeStamp);
+
+    //Assemble URL
+    let marvelApiUrl = "http://gateway.marvel.com:80/v1/public/characters?limit=" + limit + "&offset=" + startOffset + "&apikey=" + this.publicKey + "&ts=" + timeStamp + "&hash=" + hash;
+
+    if (searchText != null && searchText != "") {
+
+      marvelApiUrl += "&nameStartsWith=" + searchText;
+
+    }
+
+    //Marvel Api Call
+    const options = {
+      url: marvelApiUrl,
+    };
+
+    const response: HttpResponse = await Http.get(options);
+
+    return response;
   }
 
-  public getMessageById(id: number): Message {
-    return this.messages[id];
+  public async getCharacterById(id: number) {
+   
+    //get MD5 hash\
+    var timeStamp = new Date().getTime();
+    var hash = this.createHash(timeStamp);
+
+    //Assemble URL
+    let marvelApiUrl = "http://gateway.marvel.com:80/v1/public/characters/" + id + "?apikey=" + this.publicKey + "&ts=" + timeStamp + "&hash=" + hash;
+   
+    //Marvel Api Call
+    const options = {
+      url: marvelApiUrl,
+    };
+
+    const response: HttpResponse = await Http.get(options);
+
+    return response;
   }
+
+
+  public async getComicsList(id: number, limit: number, startOffset: number) {
+
+    //get MD5 hash
+    var timeStamp = new Date().getTime();
+    var hash = this.createHash(timeStamp);
+
+    //Assemble URL
+    let marvelApiUrl = "http://gateway.marvel.com:80/v1/public/characters/" + id + "/comics?apikey=" + this.publicKey + "&ts=" + timeStamp + "&hash=" + hash;
+  
+    //Marvel Api Call
+    const options = {
+      url: marvelApiUrl,
+    };
+
+    const response: HttpResponse = await Http.get(options);
+
+    return response;
+  }
+
+  public async getComicById(id: number) {
+
+    //get MD5 hash
+    var timeStamp = new Date().getTime();
+    var hash = this.createHash(timeStamp);
+
+    //Assemble URL
+    let marvelApiUrl = "http://gateway.marvel.com:80/v1/public/comics/" + id + "?apikey=" + this.publicKey + "&ts=" + timeStamp + "&hash=" + hash;
+    
+    //Marvel Api Call
+    const options = {
+      url: marvelApiUrl,
+    };
+
+    const response: HttpResponse = await Http.get(options);
+
+    return response;
+
+  }
+
+  public async getStoriesList(id: number, limit: number, startOffset: number) {
+
+    //get MD5 hash
+    var timeStamp = new Date().getTime();
+    var hash = this.createHash(timeStamp);
+
+    //Assemble URL
+    let marvelApiUrl = "http://gateway.marvel.com:80/v1/public/characters/" + id + "/stories?apikey=" + this.publicKey + "&ts=" + timeStamp + "&hash=" + hash;
+    
+    //Marvel Api Call
+    const options = {
+      url: marvelApiUrl,
+    };
+
+    const response: HttpResponse = await Http.get(options);
+
+    return response;
+  }
+
+  public async getSeriesList(id: number, limit: number, startOffset: number) {
+
+    //get MD5 hash
+    var timeStamp = new Date().getTime();
+    var hash = this.createHash(timeStamp);
+
+    //Assemble URL
+    let marvelApiUrl = "http://gateway.marvel.com:80/v1/public/characters/" + id + "/series?apikey=" + this.publicKey + "&ts=" + timeStamp + "&hash=" + hash;
+   
+    //Marvel Api Call
+    const options = {
+      url: marvelApiUrl,
+    };
+
+    const response: HttpResponse = await Http.get(options);
+
+    return response;
+  }
+
+  private createHash(timeStamp) {
+
+    var toBeHashed = timeStamp + this.privateKey + this.publicKey;
+    const md5 = Md5.hashStr(toBeHashed);
+
+    console.log("md5 Hash: " + JSON.stringify(md5));
+
+    return md5;
+
+  }
+  
 }

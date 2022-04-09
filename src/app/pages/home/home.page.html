@@ -1,0 +1,30 @@
+<ion-header [translucent]="true" mode="ios">
+  <ion-toolbar mode="ios">
+    <h2 color="primary">Marvel Universe</h2>
+  </ion-toolbar>
+  <ion-toolbar mode="ios">
+    <ion-searchbar type="text" showCancelButton="focus" mode="ios" (ionChange)="searchChange($event)"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+
+
+
+<ion-content [fullscreen]="true">
+
+
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let character of chrachterList" size="4">
+        <app-character [character]="character"></app-character>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="scrollInfinite($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

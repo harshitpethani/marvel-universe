@@ -1,0 +1,20 @@
+<ion-item *ngIf="story" [detail]="false" lines="none" class="ion-no-margin ion-no-padding">
+  <ion-row>
+    <ion-col size="3">
+
+      <img *ngIf="story.thumbnail != null"
+        src="{{story.thumbnail.path}}/standard_incredible.{{story.thumbnail.extension}}" />
+
+      <img *ngIf="story.thumbnail == null" src="/assets/images/standard_incredible.jpg" />
+
+    </ion-col>
+    <ion-col size="9" class="justify-content-center">
+
+      <h6 class="storyTitle" color="primary">{{story.title}}</h6>
+      <p class="type" color="primary">Type: {{story.type}}</p>
+
+    </ion-col>
+
+  </ion-row>
+
+</ion-item>

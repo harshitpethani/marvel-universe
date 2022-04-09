@@ -1,0 +1,70 @@
+<ion-header [translucent]="true">
+  <ion-toolbar mode="ios">
+    <ion-buttons slot="start">
+      <ion-back-button [text]="''"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Comic Details
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content [fullscreen]="true" *ngIf="comic" [scrollEvents]="true">
+
+  <div class="container">
+
+
+    <div class="characterImageContainer">
+
+      <img src="{{comic.thumbnail.path}}/portrait_incredible.{{comic.thumbnail.extension}}" />
+
+    </div>
+
+    <h1 color="primary" class="ion-text-center">{{comic.title}}</h1>
+
+    <p class="ion-text-justify">{{ comic.description }}</p>
+
+    <ion-grid>
+
+      <ion-row>
+        <ion-col size="4">
+          <span class="label">Format :</span>
+        </ion-col>
+
+        <ion-col size="8">
+          <span>{{comic.format}}</span>
+        </ion-col>
+
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="4">
+          <span class="label">Page Count :</span>
+        </ion-col>
+
+        <ion-col size="8">
+          <span>{{comic.pageCount}}</span>
+        </ion-col>
+
+      </ion-row>
+      
+
+      <ion-row>
+        <ion-col size="4">
+          <span class="label">Price :</span>
+        </ion-col>
+
+        <ion-col size="8">
+          <p class="price" *ngFor="let price of comic.prices">
+            ${{price .price}}({{price.type}})
+          </p>
+        </ion-col>
+
+      </ion-row>
+
+    </ion-grid>
+  </div>
+
+</ion-content>
